@@ -28,7 +28,7 @@ ansible-playbook playbook.yml --diff
 
 Для `devops` в первой лабораторной уже настроен `sudo` без пароля. Повторите последнюю команду: при втором запуске задачи должны дать `changed=0`.
 
-Проверено 12 ноября 2026 года на этой VM: `ansible.builtin.ping` вернул `pong`; первый запуск playbook завершился без ошибок, повторный — с `changed=0`. `ansible-lint .` прошёл без ошибок и предупреждений.
+Проверено 12 ноября 2026 года на этой VM: `ansible.builtin.ping` вернул `pong`; первый запуск playbook завершился без ошибок, повторный — с `changed=0`. `ansible-lint` прошёл без ошибок и предупреждений.
 
 ## 3. Проверить сайты с Mac
 
@@ -58,18 +58,19 @@ curl -H 'Host: mehmat.ru' http://127.0.0.1:8080/
 
 Ещё один способ проверки из Terminal: `curl --resolve etis.com:8080:127.0.0.1 http://etis.com:8080/`. Чтобы открыть сайт в браузере по имени, временно добавьте в `/etc/hosts` Mac строку `127.0.0.1 etis.com fizfak.ru mehmat.ru`, откройте `http://etis.com:8080/`, а после лабораторной удалите строку. SSH-туннель остановите через `Ctrl+C`.
 
-## 4. Добавить CI
+## 4. Репозиторий и CI
 
-Создайте **пустой репозиторий на GitHub** без README. В этой папке локальный Git-репозиторий уже создан, файлы закоммичены в ветку `main`. После создания удалённого репозитория выполните:
+Проект опубликован в [GitHub-репозитории lab6_devops](https://github.com/shanerone/lab6_devops). В его [Actions](https://github.com/shanerone/lab6_devops/actions) находятся два workflow: `first-run.yml` показывает работу runner, `lint.yml` запускает ansible-lint на push и pull request. Оба сценария проверены на GitHub.
+
+Для работы на другом Mac клонируйте репозиторий и создайте локальный inventory:
 
 ```sh
-git remote add origin https://github.com/shanerone/ИМЯ_РЕПОЗИТОРИЯ.git
-git push -u origin main
+git clone https://github.com/shanerone/lab6_devops.git
+cd lab6_devops
+cp inventory.ini.example inventory.ini
 ```
 
-Если вы распаковали ZIP в новую папку, локальной истории Git там не будет: перед добавлением `origin` выполните `git init -b main`, `git add .`, `git commit -m "Add Ansible nginx role and CI"`. Текущая авторизация `gh` на Mac истекла; если `git push` запросит вход, выполните `gh auth login -h github.com` и `gh auth setup-git`, завершив вход в браузере.
-
-Откройте вкладку **Actions** репозитория: `first-run.yml` показывает работу runner, `lint.yml` запускает ansible-lint на push и pull request. Если GitHub предложит включить Actions, включите их. Для демонстрации проверки pull request создайте отдельную ветку, измените файл, отправьте ветку и откройте pull request в `main`.
+Для демонстрации проверки pull request можно создать отдельную ветку, изменить файл, отправить ветку и открыть pull request в `main`.
 
 В методичке встречается «GitLab», но примеры `github.com` и `.github/workflows` относятся к GitHub Actions. Для этой части используйте GitHub.
 
