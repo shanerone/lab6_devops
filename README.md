@@ -60,16 +60,14 @@ curl -H 'Host: mehmat.ru' http://127.0.0.1:8080/
 
 ## 4. Добавить CI
 
-Создайте **пустой репозиторий на GitHub**, затем в каталоге проекта:
+Создайте **пустой репозиторий на GitHub** без README. В этой папке локальный Git-репозиторий уже создан, файлы закоммичены в ветку `main`. После создания удалённого репозитория выполните:
 
 ```sh
-git init
-git branch -M main
-git add .
-git commit -m "Add Ansible nginx role and CI"
-git remote add origin git@github.com:ВАШ_ЛОГИН/ВАШ_РЕПОЗИТОРИЙ.git
+git remote add origin https://github.com/shanerone/ИМЯ_РЕПОЗИТОРИЯ.git
 git push -u origin main
 ```
+
+Если вы распаковали ZIP в новую папку, локальной истории Git там не будет: перед добавлением `origin` выполните `git init -b main`, `git add .`, `git commit -m "Add Ansible nginx role and CI"`. Текущая авторизация `gh` на Mac истекла; если `git push` запросит вход, выполните `gh auth login -h github.com` и `gh auth setup-git`, завершив вход в браузере.
 
 Откройте вкладку **Actions** репозитория: `first-run.yml` показывает работу runner, `lint.yml` запускает ansible-lint на push и pull request. Если GitHub предложит включить Actions, включите их. Для демонстрации проверки pull request создайте отдельную ветку, измените файл, отправьте ветку и откройте pull request в `main`.
 
