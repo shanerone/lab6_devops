@@ -1,0 +1,12 @@
+---
+- name: Install nginx with virtual hosts
+  hosts: webservers
+  become: true
+  gather_facts: false
+  vars:
+    sites:
+      - etis.com
+      - fizfak.ru
+      - mehmat.ru
+  roles:
+    - nginx_vhosts
